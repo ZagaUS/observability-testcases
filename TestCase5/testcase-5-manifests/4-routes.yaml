@@ -1,0 +1,24 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: kafka-srv-5
+  namespace: observai-main
+  labels:
+    app: kafka-srv-5
+    app.kubernetes.io/component: kafka-srv-5
+    app.kubernetes.io/instance: kafka-srv-5
+    app.kubernetes.io/name: kafka-srv-5
+    app.kubernetes.io/part-of: testcase-5
+    app.openshift.io/runtime-version: latest
+spec:
+  # host: kafka-srv-5-observai-main.apps.zagaopenshift.zagaopensource.com
+  to:
+    kind: Service
+    name: kafka-srv-5
+    weight: 100
+  port:
+    targetPort: 8083-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

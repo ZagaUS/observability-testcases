@@ -1,0 +1,10 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kafka-srv-5
+  namespace: observai-main
+data:
+  MONGODB_URL: >-
+    mongodb://root:pass123@observai-mongodb-community-0.observai-mongodb-community-svc.mongodb-space.svc.cluster.local:27017,observai-mongodb-community-1.observai-mongodb-community-svc.mongodb-space.svc.cluster.local:27017,observai-mongodb-community-2.observai-mongodb-community-svc.mongodb-space.svc.cluster.local:27017/admin?ssl=false
+  PRODUCT_BOOTSTRAP_URL: 'observai-persistent-kafka-bootstrap.kafka-space.svc.cluster.local:9092'
+  PRODUCT_TOPIC: product

@@ -1,0 +1,23 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: vendor-srv-3
+  namespace: observai-main
+data:
+  POSTGRES_URL: jdbc:postgresql://postgres15-rhel8.postgresql-space.svc.cluster.local:5432/observability-demo-tables
+  POSTGRES_USER: observability-demo-user
+  POSTGRES_PASSWORD: observability123
+  APP_APIURL: http://192.168.1.210:8003/orders/getOrders
+
+# --- 
+
+
+# kind: configMap
+# apiVersion: v1
+# metadata:
+#   name: order-srv-1
+#   namespace: observai-main
+# data:
+#   postgres_url: b2JzZXJ2YWJpbGl0eS1kZW1vLXRhYmxlcwo=
+#   postgres_user: b2JzZXJ2YWJpbGl0eTEyMwo=
+#   postgres_password: b2JzZXJ2YWJpbGl0eS1kZW1vLXVzZXIK

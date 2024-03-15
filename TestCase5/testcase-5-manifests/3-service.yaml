@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kafka-srv-5
+  namespace: observai-main
+  labels:
+    app: kafka-srv-5
+    app.kubernetes.io/component: kafka-srv-5
+    app.kubernetes.io/instance: kafka-srv-5
+    app.kubernetes.io/name: kafka-srv-5
+    app.kubernetes.io/part-of: testcase-5
+    app.openshift.io/runtime-version: latest
+spec:
+  ports:
+    - name: 8083-tcp
+      protocol: TCP
+      port: 8083
+      targetPort: 8083
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app: kafka-srv-5
+    deployment: kafka-srv-5

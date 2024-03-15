@@ -1,0 +1,67 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kafka-srv-5
+  namespace: observai-main
+  labels:
+    app: kafka-srv-5
+    app.kubernetes.io/component: kafka-srv-5
+    app.kubernetes.io/instance: kafka-srv-5
+    app.kubernetes.io/name: kafka-srv-5
+    app.kubernetes.io/part-of: testcase-5
+    app.openshift.io/runtime: quarkus
+    app.openshift.io/runtime-namespace: observai-main
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-srv-5
+  template:
+    metadata:
+      labels:
+        app: kafka-srv-5
+        deployment: kafka-srv-5
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: 'true'
+    spec:
+      imagePullSecrets:
+        - name: sharanya-zaga-pull-secret
+      containers:
+        - name: kafka-srv-5
+          image: >-
+             quay.io/zagaos/testcase5-kafkasrv:latest
+          ports:
+            - containerPort: 8083
+              protocol: TCP
+          env:
+            - name: PRODUCT_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: kafka-srv-5
+                  key: PRODUCT_TOPIC
+            - name: PRODUCT_BOOTSTRAP_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: kafka-srv-5
+                  key: PRODUCT_BOOTSTRAP_URL
+            - name: MONGODB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: kafka-srv-5
+                  key: MONGODB_URL
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

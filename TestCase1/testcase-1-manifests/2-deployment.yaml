@@ -1,0 +1,139 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: order-srv-1
+  namespace: observai-main
+  labels:
+    app: order-srv-1
+    app.kubernetes.io/component: order-srv-1
+    app.kubernetes.io/instance: order-srv-1
+    app.kubernetes.io/name: order-srv-1
+    app.kubernetes.io/part-of: testcase-1
+    app.openshift.io/runtime: spring-boot
+    app.openshift.io/runtime-namespace: observai-main
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-srv-1
+  template:
+    metadata:
+      labels:
+        app: order-srv-1
+        deployment: order-srv-1
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: 'true'
+    spec:
+      containers:
+        - name: order-srv-1
+          image: >-
+            docker.io/harinolon/ocp-order-test1
+          ports:
+            - containerPort: 5089
+              protocol: TCP
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: order-srv-1
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: order-srv-1
+                  key: POSTGRES_PASSWORD      
+            - name: POSTGRES_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: order-srv-1
+                  key: POSTGRES_URL
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+
+
+--- 
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: vendor-srv-1
+  namespace: observai-main
+  labels:
+    app: vendor-srv-1
+    app.kubernetes.io/component: vendor-srv-1
+    app.kubernetes.io/instance: vendor-srv-1
+    app.kubernetes.io/name: vendor-srv-1
+    app.kubernetes.io/part-of: testcase-1
+    app.openshift.io/runtime: spring-boot
+    app.openshift.io/runtime-namespace: observai-main
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vendor-srv-1
+  template:
+    metadata:
+      labels:
+        app: vendor-srv-1
+        deployment: vendor-srv-1
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: 'true'
+    spec:
+      containers:
+        - name: vendor-srv-1
+          image: >-
+            docker.io/harinolon/ocp-vendor-test1
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: vendor-srv-1
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: vendor-srv-1
+                  key: POSTGRES_PASSWORD      
+            - name: POSTGRES_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: vendor-srv-1
+                  key: POSTGRES_URL
+            - name: APP_APIURL
+              valueFrom:
+                configMapKeyRef:
+                  name: vendor-srv-1
+                  key: APP_APIURL
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

@@ -1,0 +1,47 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: vendor-srv-4
+  namespace: observai-main
+  labels:
+    app: vendor-srv-4
+    app.kubernetes.io/component: vendor-srv-4
+    app.kubernetes.io/instance: vendor-srv-4
+    app.kubernetes.io/name: vendor-srv-4
+    app.kubernetes.io/part-of: testcase-4
+    app.openshift.io/runtime-version: latest
+spec:
+  # host: vendor-srv-4-observai-main.apps.zagaopenshift.zagaopensource.com
+  to:
+    kind: Service
+    name: vendor-srv-4
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  wildcardPolicy: None
+
+  # --- 
+
+# kind: Route
+# apiVersion: route.openshift.io/v1
+# metadata:
+#   name: order-srv-1
+#   namespace: observai-main
+#   labels:
+#     app: order-srv-1
+#     app.kubernetes.io/component: order-srv-1
+#     app.kubernetes.io/instance: order-srv-1
+#     app.kubernetes.io/name: order-srv-1
+#     app.kubernetes.io/part-of: testcase-1
+#     app.openshift.io/runtime-version: latest
+# spec:
+#   # host: order-srv-1-observai-main.apps.zagaopenshift.zagaopensource.com
+#   to:
+#     kind: Service
+#     name: order-srv-1
+#     weight: 100
+#   port:
+#     targetPort: 5089-tcp
+#   wildcardPolicy: None
+
+# --- 
